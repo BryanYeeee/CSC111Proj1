@@ -1,0 +1,92 @@
+{
+  "locations": [
+    {
+      "id": 1,
+      "name": "Dorm Room",
+      "brief_description": "1 brief",
+      "long_description": "1 long",
+      "commands": {
+        "go south": ["go", 2],
+        "pickup notebook": ["pickup", "notebook"]
+      },
+      "items": ["notebook"]
+    },
+    {
+      "id": 2,
+      "name": "Courtyard",
+      "brief_description": "2 brief",
+      "long_description": "2 long",
+      "commands": {
+        "go north": ["go", 1],
+        "go east": ["go", 3],
+        "pickup scrap paper": ["pickup", "scrap paper", "", true, ["throw out scrap paper"]],
+        "throw out scrap paper": ["buy", ["scrap paper", "cash"], "After throwing out your scrap paper, you discover some cash laying in the trash can", false]
+      },
+      "items": ["scrap paper"]
+    },
+    {
+      "id": 3,
+      "name": "Library",
+      "brief_description": "3 brief",
+      "long_description": "3 long",
+      "commands": {
+        "go west": ["go", 2],
+        "go east": ["go", 4],
+        "use printer": ["buy", ["scrap paper", "cash"], "You printed some blah blah blah"],
+        "search bookshelves": ["pickup", "textbook"],
+        "search stationery": ["pickup", "whiteboard marker"]
+      },
+      "items": ["textbook", "whiteboard marker"]
+    },
+    {
+      "id": 4,
+      "name": "Cafeteria",
+      "brief_description": "4 brief",
+      "long_description": "4 long",
+      "commands": {
+        "go west": ["go", 3],
+        "buy coffee": ["buy", ["cash", "coffee"], "You bought a large ice coffee for only 1 dollar!!!"],
+        "talk to upper year student": ["talk", "", "Hey, I heard you are doing some project. I got 100% on it so I think I could help. I didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
+        "exchange textbook for project tips": ["buy", ["textbook", "sticky note"], "Student: Here, ill write it on this sticky note for you", false]
+      },
+      "items": ["coffee", "sticky note"]
+    }
+  ],
+  "items": [
+    {
+      "name": "notebook",
+      "description": "Your notebook and todo list.",
+      "use_command": ["You need USB and Charger"]
+    },
+    {
+      "name": "scrap paper",
+      "description": "A blank sheet of paper",
+      "use_command": ""
+    },
+    {
+      "name": "cash",
+      "description": "A dollar bill you found in the trash can",
+      "use_command": ""
+    },
+    {
+      "name": "textbook",
+      "description": "A textbook on advanced quantum physics",
+      "use_command": ""
+    },
+    {
+      "name": "whiteboard marker",
+      "description": "A marker pen designed for writing on whiteboard",
+      "use_command": ""
+    },
+    {
+      "name": "coffee",
+      "description": "An extremely caffienated beverage",
+      "use_command": ""
+    },
+    {
+      "name": "sticky note",
+      "description": "A sticky note with the secrets to a successful project",
+      "use_command": ""
+    }
+  ]
+}
