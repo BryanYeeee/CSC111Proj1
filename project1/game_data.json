@@ -19,6 +19,7 @@
       "commands": {
         "go north": ["go", 1],
         "go east": ["go", 3],
+        "go west": ["go", 5],
         "pickup scrap paper": ["pickup", "scrap paper", "", true, ["throw out scrap paper"]],
         "throw out scrap paper": ["buy", ["scrap paper", "cash"], "After throwing out your scrap paper, you discover some cash laying in the trash can", false]
       },
@@ -32,7 +33,6 @@
       "commands": {
         "go west": ["go", 2],
         "go east": ["go", 4],
-        "use printer": ["buy", ["scrap paper", "cash"], "You printed some blah blah blah"],
         "search bookshelves": ["pickup", "textbook"],
         "search stationery": ["pickup", "whiteboard marker"]
       },
@@ -46,10 +46,24 @@
       "commands": {
         "go west": ["go", 3],
         "buy coffee": ["buy", ["cash", "coffee"], "You bought a large ice coffee for only 1 dollar!!!"],
-        "talk to upper year student": ["talk", "", "Hey, I heard you are doing some project. I got 100% on it so I think I could help. I didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
+        "talk to upper year student": ["talk", "", "Student: Hey, I heard you are doing some project. I got 100% on it so I think I could help. I didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
         "exchange textbook for project tips": ["buy", ["textbook", "sticky note"], "Student: Here, ill write it on this sticky note for you", false]
       },
       "items": ["coffee", "sticky note"]
+    },
+    {
+      "id": 5,
+      "name": "CS Lounge",
+      "brief_description": "5 brief",
+      "long_description": "5 long",
+      "commands": {
+        "go east": ["go", 2],
+        "talk to half asleep student": ["talk", "", "Half Asleep Student: I'm so tired i need coffee", true, ["give half asleep student coffee"]],
+        "talk to group member": ["pickup", "USB", "Group member: Hi, heres your USB"],
+        "search bookshelves": ["pickup", "comic book"],
+        "give half asleep student coffee": ["buy", ["coffee", "lucky mug"], "Half Asleep Stuednt: thanks have this mug", false]
+      },
+      "items": ["comic book", "lucky mug", "USB"]
     }
   ],
   "items": [
@@ -86,6 +100,21 @@
     {
       "name": "sticky note",
       "description": "A sticky note with the secrets to a successful project",
+      "use_command": ""
+    },
+    {
+      "name": "lucky mug",
+      "description": "This mug looks like itll help your project",
+      "use_command": ""
+    },
+    {
+      "name": "comic book",
+      "description": "Comic boooook",
+      "use_command": ""
+    },
+    {
+      "name": "USB",
+      "description": "USB files",
       "use_command": ""
     }
   ]
