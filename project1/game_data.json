@@ -65,6 +65,19 @@
       },
       "items": ["comic book", "lucky mug", "USB"]
     }
+    {
+      "id": 6,
+      "name": "Class Building",
+      "brief_description": "6 brief",
+      "long_description": "6 long",
+      "commands": {
+        "go north": ["go", 2]
+        "go west": ["go", 7]
+        "go east": ["go", 8]
+        "go south": ["go", 9]
+        
+    }
+          
   ],
   "items": [
     {
