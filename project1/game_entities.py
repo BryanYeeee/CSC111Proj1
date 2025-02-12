@@ -21,8 +21,6 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from dataclasses import dataclass
 from typing import Optional, Any
 
-from pygame.sprite import collide_mask
-
 
 @dataclass
 class Command:
@@ -31,7 +29,7 @@ class Command:
 
     Instance Attributes:
         - command_type: the type of command this command is
-        - available: whether or not the command is currently executable by the player
+        - available: whether the command is currently executable by the player
         - score_change: integer value representing the change in score when calling this command
         - command_text: the text displayed when this command is called, None if no text will be displayed
         - next_location: the id of the location Player will move to, None if Player remains still
@@ -92,6 +90,8 @@ class Item:
         - # TODO Describe each instance attribute here
         - name: name of the item
         - description: description of the item
+        - command_name: the name by which the command is called
+        - use_command: the command object associated with this
 
     Representation Invariants:
         - not command_name is None or use_command is None
@@ -139,7 +139,8 @@ class Player:
 
         self._inventory = []
         self.score = 0
-        self.moves_left = 12
+        STARTING_MOVES_LEFT = 14
+        self.moves_left = STARTING_MOVES_LEFT
 
     def has_item(self, item: Item) -> bool:
         """Return whether the Player has an item or not"""
@@ -181,6 +182,10 @@ class Location:
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
+        - id_num > 0
+        - name != ''
+        - brief_description != long_description
+        - len(commands) > 0
     """
     id_num: int
     name: str
