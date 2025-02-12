@@ -35,7 +35,8 @@ class Command:
         - next_location: the id of the location Player will move to, None if Player remains still
         - item: the name of the item added to the Player's inventory, None if the Player is not given any item
         - cost: the name of the item that is removed from the Player's inventory, None if the Player's inventory remains
-        - unlocked_commands: list of strings corresponding to the newly available commands, None if no commands are unlocked
+        - unlocked_commands: list of strings corresponding to the newly available commands, None if no commands are
+        unlocked
 
     Representation Invariants:
         - command_type in ["go", "pickup", "use", "buy", "talk", "exchange", "unlock"]
@@ -56,7 +57,7 @@ class Command:
     unlocked_commands: Optional[list[str]] = None
 
     def __init__(self, command_type: str, result: Any, command_text: str = None, available: bool = True,
-                 unlocked_commands: list[str] = None, score_change: int = 0):
+                 unlocked_commands: list[str] = None, score_change: int = 0) -> None:
         self.command_type = command_type
         self.available = available
         if self.command_type == 'go':
@@ -101,7 +102,7 @@ class Item:
     command_name: Optional[str] = None
     use_command: Optional[Command] = None
 
-    def __init__(self, name, description, command_name=None, use_command=None) -> None:
+    def __init__(self, name: str, description: str, command_name: str = None, use_command: list[Any] = None) -> None:
         """Initialize a new item.
 
         # TODO Add more details here about the initialization if needed
@@ -132,6 +133,7 @@ class Player:
     _inventory: list[Item]
     score: int
     moves_left: int
+    STARTING_MOVES_LEFT: int = 15
 
     def __init__(self) -> None:
         """Initialize a new Player.
@@ -141,8 +143,7 @@ class Player:
 
         self._inventory = []
         self.score = 0
-        STARTING_MOVES_LEFT = 15
-        self.moves_left = STARTING_MOVES_LEFT
+        self.moves_left = self.STARTING_MOVES_LEFT
 
     def has_item(self, item: Item) -> bool:
         """Return whether the Player has an item or not"""
@@ -154,7 +155,7 @@ class Player:
         print(item.name + ": " + item.description)
         print(item.name + " was added into your inventory.")
 
-    def remove_item(self, item: Item):
+    def remove_item(self, item: Item) -> None:
         """Remove an Item from Player's inventory"""
         self._inventory.remove(item)
         print(item.name + " was removed from your inventory.")
@@ -165,7 +166,7 @@ class Player:
 
     def show_inventory(self) -> None:
         """Prints a list of the Players inventory, along with descriptions of each item"""
-        print('Inventory: ', [item.name for item in self._inventory])
+        print('Inventory: ', [items.name for items in self._inventory])
         for item in self._inventory:
             print("- " + item.name + ": " + item.description)
 
@@ -173,7 +174,7 @@ class Player:
         """Changes the player's score"""
         self.score = self.score + score_change
 
-    def change_moves(self, move_change) -> None:
+    def change_moves(self, move_change: int) -> None:
         """Changes the player's move count"""
         self.moves_left = self.moves_left + move_change
 
@@ -187,7 +188,8 @@ class Location:
         - name: name of this location
         - brief_description: brief description of this location
         - long_description: long description of this location
-        - commands: dictionary asociating the name of a Command to the Command class. Stores the available command options
+        - commands: dictionary asociating the name of a Command to the Command class. Stores the available command
+        options
         - visited: whether or not the Player has visited this location before
 
     Representation Invariants:
@@ -204,8 +206,8 @@ class Location:
     commands: dict[str, Command]
     visited: bool
 
-    def __init__(self, location_id, name, brief_description, long_description, commands,
-                 visited=False) -> None:
+    def __init__(self, location_id: int, name: str, brief_description: str, long_description: str, commands: dict,
+                 visited: bool = False) -> None:
         """Initialize a new location.
 
         # TODO Add more details here about the initialization if needed
@@ -218,7 +220,7 @@ class Location:
         self.commands = {c: Command(*commands[c]) for c in commands}
         self.visited = visited
 
-    def set_command_available(self, command: str, available: bool):
+    def set_command_available(self, command: str, available: bool) -> None:
         """Make a command unavailable or unavailable
 
         Preconditions:
@@ -237,8 +239,6 @@ if __name__ == "__main__":
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+    python_ta.check_all(config={
+         'max-line-length': 120,'disable': ['R1705', 'E9998', 'E9999']})
