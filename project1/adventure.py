@@ -48,6 +48,7 @@ class AdventureGame:
     _items: dict[str, Item]
     current_location_id: int  # Suggested attribute, can be removed
     ongoing: bool  # Suggested attribute, can be removed
+    WIN_CONDITION = [1, "charger", "USB"]
 
     def __init__(self, game_data_file: str, initial_location_id: int) -> None:
         """
@@ -92,7 +93,7 @@ class AdventureGame:
         items = {}
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above
         for item_data in data['items']:
-            if item_data['use_command'] == "":
+            if not('use_command' in item_data):
                 item_obj = Item(item_data['name'], item_data['description'])
             else:
                 item_obj = Item(item_data['name'], item_data['description'], item_data["command_name"], item_data['use_command'])
@@ -137,10 +138,12 @@ def use_menu(choice: str, game: AdventureGame, player: Player, game_log: EventLi
         game_log.display_events()
     elif choice == "inventory":
         player.show_inventory()
+    elif choice == "score":
+        print("Score: ")
     print("------------------------------------------------")
 
 
-def use_command(command: Command, game: AdventureGame, player: Player) -> bool:
+def use_command(command: Command, game: AdventureGame, player: Player, location: Location) -> bool:
     """ Use command, returns true if succesful
     """
     if command.command_type == 'go':
@@ -198,7 +201,7 @@ def undo_command(prev_event: Event, game: AdventureGame, player: Player, game_lo
         item = game.get_item(command.item)
         player.remove_item(item)
 
-    if prev_command.unlocked_commands is not None:
+    if prev_command.unlocked_commands is not None and location is not None:
         for c in prev_command.unlocked_commands:
             if prev_command.command_type == 'unlock':
                 game.get_location(prev_command.unlock_location).commands[c].available = False
@@ -246,42 +249,47 @@ if __name__ == "__main__":
             location.visited = True
             new_location = True
 
+        win_con_loc = game.WIN_CONDITION[0]
+        win_con_item1, win_con_item2 = game.get_item(game.WIN_CONDITION[1]), game.get_item(game.WIN_CONDITION[2])
+        if location.id_num == win_con_loc and player.has_item(win_con_item1) and player.has_item(win_con_item2):
+            location.commands["submit project"].available = True
+
+        print("======================================")
         # Display possible actions at this location
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
         print("At this location, you can also:")
         available_commands = [c for c in location.commands if location.commands[c].available]
         item_commands = [item.command_name for item in player.get_inventory() if item.use_command is not None]
+
         for action in available_commands:
             print("-", action)
         for action in item_commands:
             print("-", action)
 
         print("Moves Left: ", player.moves_left)
-
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
         while choice not in available_commands and choice not in menu and choice not in item_commands:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
-        print("You decided to:", choice)
+        if choice == "submit project":
+            game.ongoing = False
 
         if choice in menu:
-            # TODO: Handle each menu command as appropriate
-            # Note: For the "undo" command, remember to manipulate the game_log event list to keep it up-to-date
+            # Handle menu actions
             use_menu(choice, game, player, game_log)
         else:
             # Handle non-menu actions
             command = None
             if choice in item_commands:
                 command = game.get_item(choice.split(" ")[1]).use_command
-                use_command(command, game, player)
-                if command.unlocked_commands is not None:
-                    for c in command.unlocked_commands:
-                        location.commands[c].available = True
             else:
                 command = location.commands[choice]
-                if use_command(command, game, player):
-                    game_log.add_event(Event(location.id_num, choice, command, new_location))
+            if use_command(command, game, player, location):
+                game_log.add_event(Event(location.id_num, choice, command, new_location))
 
         print("================================================")
+
+    print("----- GAME FINISHED -----")
+    print("Score: ")
