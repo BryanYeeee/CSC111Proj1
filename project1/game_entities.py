@@ -39,10 +39,10 @@ class Command:
         - use_text: PROB NOT NEEDED <<<<<<
 
     Representation Invariants:
-        - command_type in ["go", "pickup", "use", "buy", "talk"]
+        - command_type in ["go", "pickup", "use", "buy", "talk", "exchange", "unlock"]
         - not command_type == "go" or next_location is not None
         - not command_type == "pickup" or item is not None
-        - not command_type == "use" <<< REMOVE ???
+        - not command_type == "use" <<< REMOVE ???  #TODO: whats this
         - not command_type == "buy" or (item is not None and cost is not None)
         - not command_type == "talk" or command_text is not None
     """
@@ -70,7 +70,9 @@ class Command:
             self.cost = result[0]
             self.item = result[1]
         elif self.command_type == 'talk':
-            x = 1  # Nothing for now
+            print(command_text)     # display the command_text
+        elif self.command_type == "unlock":
+            y = 1   # Nothing for now
 
         if not (unlocked_commands == [] or unlocked_commands is None):
             self.unlocked_commands = unlocked_commands
@@ -121,6 +123,7 @@ class Player:
         - # TODO Describe each instance attribute here
         - _inventory: list of Items that the Player is holding
         - score: Integer of the Player's score
+        - moves_left: Integer number of moves left
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
@@ -137,9 +140,10 @@ class Player:
 
         self._inventory = []
         score = 0
+        moves_left = 12
 
     def has_item(self, item: Item) -> bool:
-        """Return whether or not the Player has an item or not"""
+        """Return whether the Player has an item or not"""
         return item in self._inventory
 
     def give_item(self, item: Item) -> None:
