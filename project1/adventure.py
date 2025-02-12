@@ -144,18 +144,23 @@ def use_menu(choice: str, game: AdventureGame, player: Player, game_log: EventLi
     elif choice == "inventory":
         player.show_inventory()
     elif choice == "score":
-        print("Score: ")
+        print("Score: " + str(player.score))
+    elif choice == "quit":
+        print("Quiting Game...")
+        game.ongoing = False
     print("------------------------------------------------")
 
 
 def use_command(command: Command, game: AdventureGame, player: Player, location: Location) -> bool:
     """ Use command, returns true if succesful
     """
+    print("------------------------------------------------")
     if command.command_type == 'go':
         game.current_location_id = command.next_location
+        player.change_moves(-1)
+        print("A move was used")
+        print("------------------------------------------------")
         return True
-
-    print("------------------------------------------------")
 
     if command.command_type == 'buy':
         cost_item = game.get_item(command.cost)
@@ -173,6 +178,11 @@ def use_command(command: Command, game: AdventureGame, player: Player, location:
         command.print_command_text()
 
     print("------------------------------------------------")
+
+    if command.score_change > 0:
+        player.change_score(command.score_change)
+        print("You gained " + str(command.score_change) + " Score")
+        print("------------------------------------------------")
 
     if command.unlocked_commands is not None:
         for c in command.unlocked_commands:
@@ -196,6 +206,7 @@ def undo_command(prev_event: Event, game: AdventureGame, player: Player, game_lo
         location.visited = False
     if prev_command.command_type == 'go':
         game.current_location_id = prev_event.loc_id_num
+        player.change_moves(1)
     elif prev_command.command_type == 'pickup':
         item = game.get_item(prev_command.item)
         player.remove_item(item)
@@ -206,6 +217,7 @@ def undo_command(prev_event: Event, game: AdventureGame, player: Player, game_lo
         item = game.get_item(command.item)
         player.remove_item(item)
 
+    player.change_score(prev_command.score_change*-1)
     if prev_command.unlocked_commands is not None and location is not None:
         for c in prev_command.unlocked_commands:
             if prev_command.command_type == 'unlock':
@@ -296,5 +308,9 @@ if __name__ == "__main__":
 
         print("================================================")
 
+        if player.moves_left == 0:
+            print("You ran out of moves! \nThe project went unsubmitted and you recieved a 0% :( ......")
+            game.ongoing = False
+
     print("----- GAME FINISHED -----")
-    print("Score: ")
+    print("Score: " + str(player.score))

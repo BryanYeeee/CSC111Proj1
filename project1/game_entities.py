@@ -141,7 +141,7 @@ class Player:
 
         self._inventory = []
         self.score = 0
-        STARTING_MOVES_LEFT = 14
+        STARTING_MOVES_LEFT = 15
         self.moves_left = STARTING_MOVES_LEFT
 
     def has_item(self, item: Item) -> bool:
@@ -168,6 +168,14 @@ class Player:
         print('Inventory: ', [item.name for item in self._inventory])
         for item in self._inventory:
             print("- " + item.name + ": " + item.description)
+
+    def change_score(self, score_change: int) -> None:
+        """Changes the player's score"""
+        self.score = self.score + score_change
+
+    def change_moves(self, move_change) -> None:
+        """Changes the player's move count"""
+        self.moves_left = self.moves_left + move_change
 
 
 @dataclass
