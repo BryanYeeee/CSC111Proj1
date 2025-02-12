@@ -6,89 +6,251 @@
 \usepackage[margin=0.75in]{geometry}
 
 \title{CSC111 Winter 2025 Project 1}
-\author{TODO: FILL IN YOUR NAME(S) HERE}
+\author{Bryan Yee & Deepankar Garg}
 \date{\today}
 
 \begin{document}
 \maketitle
 
 \section*{Running the game}
-We should be able to run your game by simply running \texttt{adventure.py}. If you have any other requirements (e.g., installing certain modules), describe them here. Otherwise, skip this section.
+This project does not have any extra libraries to install. To run the game, simply run \texttt{adventure.py}
 
 \section*{Game Map}
-Example game map below (edit it to show your actual game map):
-
 \begin{verbatim}
-  1  2  3
- -1  4 -1
- -1  5 -1
+ -1  1 -1 -1 
+  8  2  3  4
+  6  9  5 -1
+ -1  7 -1 -1
 \end{verbatim}
-
-Starting location is: 1
+The starting location is: 1
 
 \section*{Game solution}
-List of commands:
+List of commands: ["go south", "go south", "go south", "talk to professor", "go north", "go west","pickup charger","go east","go north","go west","talk to group member","go east","go north","submit project"]
 
 \section*{Lose condition(s)}
-Description of how to lose the game:
-
-List of commands:
-
-Which parts of your code are involved in this functionality:
-
+Description of how to lose the game:\\
+The lose condition of this game is when the player runs out of moves (by default, 14 moves). A move occurs whenever the player uses the "go" command to enter a new location. However, any commands used within a room do not count as moves.
+\\\\
+List of commands:\\
+{["go south", "go east", "go east", "go west", "go west", "go south", "go east", "go west", "go south", "go north", "go west", "go east", "go north", "go west", "go east"]}\\
+In this example, the player attempted to visit every location, but ran out of moves in the process resulting in the game being a loss.
+\\\\
+Which parts of your code are involved in this functionality:\\
+In \texttt{adventure.py}, the use$\_$command() is called everytime the player chooses a command. If the "go" command is used, then the number of moves stored in player object will be decreased by one. In the main game loop, also located in \texttt{adventure.py}, there is an if loop checking to see if the player has any remaining moves after a command is called which decides whether the game will continue or not.
 % Copy-paste the above if you have multiple lose conditions and describe each possible way to lose the game
 
 \section*{Inventory}
-
+Note: Not all items can be used at any given moment, and can only be used in certain locations.\\
 \begin{enumerate}
 \item All location IDs that involve items in the game:
-
-\item Item data:
 \begin{enumerate}
-    \item For Item 1:
+    \item Location ID, 1: Dorm
     \begin{itemize}
-    \item Item name:
-    \item Item start location ID:
-    \item Item target location ID:
+        \item Item 1: Notebook
+        \begin{itemize}
+            \item Pickup command: "pickup notebook"
+            \item Use command: "check notebook"
+            \begin{itemize}
+                \item Used anywhere
+                \item Using notebook will inform the player on the objective of the game
+            \end{itemize}
+        \end{itemize}
     \end{itemize}
-        \item For Item 2:
+    \item  Location ID, 2: Courtyard
     \begin{itemize}
-    \item Item name:
-    \item Item start location ID:
-    \item Item target location ID:
+        \item Item 2: Scrap paper
+        \begin{itemize}
+            \item Pickup command: "pickup scrap paper"
+            \item Use command: "throw out scrap paper"
+            \begin{itemize}
+                \item Used in Location 2, Courtyard
+            \end{itemize}
+        \end{itemize}
+        \item Item 3: Cash
+        \begin{itemize}
+            \item Pickup command: "throw out scrap paper"
+                                                \begin{itemize}
+                                                    \item Can only be called once player has Item 2, Scrap paper
+                                                \end{itemize}
+                                                \item Use command: "buy coffee"
+                                                \begin{itemize}
+                                                    \item Used in Location 4, Cafe
+                                                \end{itemize}
+        \end{itemize}
     \end{itemize}
-        \item For Item 3:
+    \item  Location ID, 3: Library
     \begin{itemize}
-    \item Item name:
-    \item Item start location ID:
-    \item Item target location ID:
+        \item Item 4: Textbook
+        \begin{itemize}
+            \item Pickup command: "check bookshelves"
+            \item Use command: "exchange textbook for project tips"
+            \begin{itemize}
+                \item Used in Location 4, Cafe
+            \end{itemize}
+        \end{itemize}
     \end{itemize}
-    % Copy-paste the above if you have more items, to list ALL items
+    \item Location ID, 4: Cafe
+    \begin{itemize}
+        \item Item 5: Coffee
+        \begin{itemize}
+            \item Pickup command: "buy coffee"
+            \begin{itemize}
+                \item Will only give player item if the player has Item 3, Cash
+            \end{itemize}
+            \item Use command 1: "drink coffee"
+            \begin{itemize}
+                \item Used anywhere
+                \item Gives player 2 extra moves
+            \end{itemize}
+            \item Use command 2: "give half asleep student coffee"
+            \begin{itemize}
+                \item Used in Location 8, CS Lounge
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \item Location ID, 5: Classroom 2
+    \begin{itemize}
+        \item Item 6: Sticky Note
+        \begin{itemize}
+            \item Pickup command: "exchange textbook for project tips"
+            \begin{itemize}
+                \item Can be called once player calls "talk to upper year student", in Location 5, Classroom
+                \item Will only give player item if the player has Item 4, Textbook
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    \item Location ID, 6: Classroom 1
+    \begin{itemize}
+        \item Item 7: Laptop Charger
+        \begin{itemize}
+            \item Pickup command: "pickup laptop charger"
+        \end{itemize}
+    \end{itemize}
+    \item Location ID, 8: CS Lounge
+    \begin{itemize}
+        \item Item 8: USB
+        \begin{itemize}
+            \item Pickup command: "pickup laptop charger"
+        \end{itemize}
+        \item Item 9: Lucky Mug
+        \begin{itemize}
+            \item Pickup command: "give half asleep student coffee"
+            \begin{itemize}
+                \item Can be called once player calls "talk to half asleep student", also in Location 8, CS Lounge
+                \item Will only give player item if the player has Item 5, Coffee
+            \end{itemize}
+        \end{itemize}
+        \item Item 10: Comic Book
+        \begin{itemize}
+            \item Pickup command: "search bookshelves"
+            \item Use command: "read comic book"
+            \begin{itemize}
+                \item Used in Location 1, Dorm
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
 \end{enumerate}
 
-    \item Exact command(s) that should be used to pick up an item (choose any one item for this example), and the command(s) used to use/drop the item (can copy the list you assigned to \texttt{inventory\_demo} in the \texttt{project1\_simulation.py} file)
-    \item Which parts of your code (file, class, function/method) are involved in handling the \texttt{inventory} command:
+    \item Which parts of your code (file, class, function/method) are involved in handling the \texttt{inventory} command:\\
+    The Player class in \texttt{game$\_$entities.py} stores the attribute for the player's inventory. This attribute is an array of Item classes. When the \texttt{inventory} command is called in the main game loop, it will call  \texttt{player.show$\_$inventory()} and print the list of items in the player's inventory into the console.
 \end{enumerate}
 
 \section*{Score}
 \begin{enumerate}
 
-    \item Briefly describe the way players can earn scores in your game. Include the first location in which they can increase their score, and the exact list of command(s) leading up to the score increase:
-
+    \item Briefly describe the way players can earn scores in your game. Include the first location in which they can increase their score, and the exact list of command(s) leading up to the score increase:\\\\
+Various puzzles, some of which are mandatory, will reward the player with score upon completion. \\\\
+Score from throwing away scrap paper: 1000 Score
+        \begin{itemize}
+            \item Go to the Courtyard from the starting location
+            \item Pickup scrap paper
+            \item Throw scrap paper to get the item, Cash (+1000 score)
+        \end{itemize}
+Commands: ["go south", "pickup scrap paper", "throw out scrap paper"]
+\\\\\\
+Score from Sticky Note: 2000 Score
+        \begin{itemize}
+            \item Go to the Courtyard, and then the library
+            \item Search the bookshelves for a textbook (+1000 score)
+            \item Go to the Classroom
+            \item Talk to the upper year student
+            \item Exchange the textbook for project tips, to get the sticky note (+1000 score)
+        \end{itemize}
+Commands: ["go south", "go east", "search bookshelves", "go east", "talk to upper year student", "exchange textbook for project tips"]
+\\\\\\
+Score from Comic Book (This puzzle decreases the player's score, so the player will have to learn to avoid doing these steps): -1000 score
+        \begin{itemize}
+            \item Go to the Courtyard, and then the CS Lounge
+            \item Search the bookshelves for a comic book
+            \item Go back to the courtyard, and then the dorm
+            \item Read the comic book (-1000 score)
+        \end{itemize}
+Commands: ["go south", "go west",  "search bookshelves", "go east", "go north", "read comic book"]
+\\\\\\
+Score from Lucky Mug: 2000 Score
+        \begin{itemize}
+            \item Repeat steps in the scrap paper puzzle to get cash
+            \item Go to the library from the courtyard, and then the cafe
+            \item Buy coffee with the item, cash
+            \item Go back to the library, then courtyard, and then CS Lounge
+            \item Talk to the half asleep student
+            \item Give the student the item, coffee and recieve the item, lucky mug (+2000 score)
+        \end{itemize}
+Commands: ["go south", "pickup scrap paper", "throw out scrap paper", "go east", "go east", "buy coffee", "go west", "go west", "go west", "talk to half asleep student", "give half asleep student coffee"]\\
+Note: When the player obtains the coffee, they have to decide whether they want to save it in order to get the lucky mug, or drink the coffee themselves to obtain an extra 2 moves.
+\\\\\\
+Score from Laptop Charger (mandatory to complete the game): 4000 Score
+        \begin{itemize}
+            \item Go to the Courtyard, and then the class building, then the prof office
+            \item Ask the prof to unlock Classroom 1 (+1000 score)
+            \item Go back to the class building, and then Classroom 1
+            \item Pickup the laptop charger (+3000 score)
+        \end{itemize}
+Commands: ["go south", "go south",  "go south", "talk to prof", "go north", "go west", "pickup laptop charger"]
+\\\\\\
+Score from USB (mandatory to complete the game): 3000 Score
+        \begin{itemize}
+            \item Go to the Courtyard, and then the CS Lounge
+            \item Talk to the group member to obtain the USB (+3000 score)
+        \end{itemize}
+Commands: ["go south", "go west", "talk to group member"]
+\\\\\\
 
     \item Copy the list you assigned to \texttt{scores\_demo} in the \texttt{project1\_simulation.py} file into this section of the report:
 
 
-    \item Which parts of your code (file, class, function/method) are involved in handling the \texttt{score} functionality:
+    \item Which parts of your code (file, class, function/method) are involved in handling the \texttt{score} functionality:\\
+        In the \texttt{game\_data.json} file, where the list of available commands are listed out, each command that would result in a change of score has a parameter indicating how much score the player will earn upon calling the command. In \texttt{adventure.py}, where the main game loop is executed, calling a command (the use$\_$command() method) will check to see if the chosen command has a score change or not. If it does, then it will update the player's score attribute using the ******** method.
 \end{enumerate}
 
 \section*{Enhancements}
 \begin{enumerate}
-    \item Describe your enhancement \#1 here
+    \item Simple and Complex Puzzles
     \begin{itemize}
-        \item Brief description of what the enhancement is (if it's a puzzle, also describe what steps the player must take to solve it):
-        \item Complexity level (choose from low/medium/high):
-        \item Reasons you believe this is the complexity level (e.g., mention implementation details, how much code did you have to add/change from the baseline, what challenges did you face, etc.)
+        \item The game has various simple and complex puzzles that reward the user with score as described in the \textit{Score} section of this report. The complex puzzles (Laptop Charger and Sticky Note) all require multiple steps, such as buying items and moving around to complete. All the other puzzles are considered simple as they only have 1-3 steps to complete.
+        \item Complexity level: mixed (depended on the command)
+        \item We altered the default code to be able to create functional commands almost completely with\texttt{ game$\_$data.json} and the Command class found in \texttt{game$\_$entities.py}. This would allow for as little hard coding as possible when selecting commands. In addition, it was difficult to design puzzles that the player would have to strategically decide which puzzles are the best to complete in the given amount of moves.
+    \end{itemize}
+\\\\\\
+    \item The "buy" Command Type
+    \begin{itemize}
+        \item The buy command allows the player to exchange an item in their inventory for another item. Certain locations will have a buy command that are either available by default, or unlocked upon calling another command (ex. talking to a student).
+Note: Unlike the "go" command, not all "buy commands" are labeled as "buy [item]". Instead, all "buy commands" are characterized by requiring 1 item, and rewarding another.
+        \item Complexity level: medium
+        \item This enhancement is of medium difficulty because although it functions similar to a "pickup" item command, it requires extra conditions (ex. checking if the player has the required item) to check if the player is able to use this command. What made this command difficult to implement, was not the functionality but rather designing how the game data would store the command's data.
+    \end{itemize}
+    \item The "talk" Command Type
+    \begin{itemize}
+        \item The talk command will print some dialogue, leading to further events occuring. The availability of the talk command is dependant on the player's current location. Using the talk command will typically result in another command being unlocked (like a buy command)
+        \item Complexity level: low
+        \item This enhancement is of low difficulty because it will simply print out some text from \texttt{game$\_$data.json} into the console. Similar to the buy command, the main difficulty was creating a way to define the commands with very little hard coding. For the talk command, we had to create a way in which it would unlock other commands.
+    \end{itemize}
+\\\\\\
+    \item The Player Class
+    \begin{itemize}
+        \item The Player class stores the data for the player's inventory, score, and moves left. The class is found in \texttt{game$\_$entities.py}
+        \item Complexity level: low
+        \item This enhancement is of low difficulty because it simply stores variables attached to the player and provides basic methods such as displaying the inventory. 
     \end{itemize}
 
     % Uncomment below section if you have more enhancements; copy-paste as needed

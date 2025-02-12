@@ -21,8 +21,8 @@
         "go east": ["go", 3],
         "go south": ["go", 9],
         "go west": ["go", 8],
-        "pickup scrap paper": ["pickup", "scrap paper", "", true, ["throw out scrap paper"], 1000],
-        "throw out scrap paper": ["buy", ["scrap paper", "cash"], "After throwing out your scrap paper, you discover some cash laying in the trash can", false]
+        "pickup scrap paper": ["pickup", "scrap paper", "", true, ["throw out scrap paper"]],
+        "throw out scrap paper": ["buy", ["scrap paper", "cash"], "After throwing out your scrap paper, you discover some cash laying in the trash can", false, [], 1000]
       }
     },
     {
@@ -33,7 +33,7 @@
       "commands": {
         "go west": ["go", 2],
         "go east": ["go", 4],
-        "search bookshelves": ["pickup", "textbook"]
+        "search bookshelves": ["pickup", "textbook", "", true, [], 1000]
       }
     },
     {
@@ -56,7 +56,7 @@
         "go west": ["go", 9],
         "talk to a student": ["talk","", "Student: Hey! Were you looking for your charger? \nI saw a charger in a locked classroom, but you will need to find a professor to unlock it"],
         "talk to upper year student": ["talk", "", "Upper Year Student: Hey, I heard you are doing some project. \nI got 100% on it so I think I could help. \nI didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
-        "exchange textbook for project tips": ["buy", ["textbook", "sticky note"], "Upper Year Student: Here, I'll write it on this sticky note for you", false]
+        "exchange textbook for project tips": ["buy", ["textbook", "sticky note"], "Upper Year Student: Here, I'll write it on this sticky note for you", false, [], 1000]
       }
     },
     {
@@ -67,7 +67,7 @@
       "commands":
       {
         "go east": ["go", 9],
-        "pickup charger": ["pickup", "charger", "", true, [], 2000]
+        "pickup charger": ["pickup", "charger", "", true, [], 3000]
       }
     },
     {
@@ -89,9 +89,9 @@
       "commands": {
         "go east": ["go", 2],
         "talk to half asleep student": ["talk", "", "Half Asleep Student: I'm so tired i need coffee", true, ["give half asleep student coffee"]],
-        "talk to group member": ["pickup", "USB", "Group member: Hi, here's the USB with our project files on it. \nGood luck!"],
+        "talk to group member": ["pickup", "USB", "Group member: Hi, here's the USB with our project files on it. \nGood luck!", true, [], 3000],
         "search bookshelves": ["pickup", "comic book"],
-        "give half asleep student coffee": ["buy", ["coffee", "lucky mug"], "Half Asleep Stuednt: Thank you so much, here, have this mug", false]
+        "give half asleep student coffee": ["buy", ["coffee", "lucky mug"], "Half Asleep Stuednt: Thank you so much, here, have this mug", false, [], 2000]
       }
     },
     {

@@ -22,7 +22,7 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 """
 from __future__ import annotations
 from proj1_event_logger import Event, EventList
-from adventure import AdventureGame, use_command
+from adventure import AdventureGame, use_command, use_menu
 from game_entities import Command, Location, Item, Player
 
 
@@ -68,13 +68,18 @@ class AdventureGameSimulation:
             print("You chose to:", choice)
 
             item_commands = [item.command_name for item in self._player.get_inventory() if item.use_command is not None]
+            menu = ["look", "inventory", "score", "undo", "log", "quit"]
 
-            if choice in item_commands:
-                command = self._game.get_item(choice.split(" ")[1]).use_command
+            if choice in menu:
+                use_menu(choice, self._game, self._player, self._events)
             else:
-                command = location.commands[choice]
-            if use_command(command, self._game, self._player, location):
-                self._events.add_event(Event(location.id_num, choice, command, False))
+                if choice in item_commands:
+                    command = self._game.get_item(choice.split(" ")[1]).use_command
+                else:
+                    command = location.commands[choice]
+
+                if use_command(command, self._game, self._player, location):
+                    self._events.add_event(Event(location.id_num, choice, command, False))
             step_num = step_num + 1
 
 
@@ -89,12 +94,15 @@ if __name__ == "__main__":
     # })
 
     # TODO: Modify the code below to provide a walkthrough of commands needed to win and lose the game
-    win_walkthrough = ["go south", "pickup scrap paper"]
-    expected_log = []  # Update this log list to include the IDs of all locations that would be visited
+    win_walkthrough = ["go south", "go south", "go south", "talk to professor", "go north", "go west", "pickup charger",
+                       "go east", "go north", "go west", "talk to group member", "go east", "go north",
+                       "submit project"]
+    expected_log = [1, 2, 9, 7, 7, 9, 6, 6, 9, 2, 8, 8, 2,
+                    1]  # Update this log list to include the IDs of all locations that would be visited
     # Uncomment the line below to test your walkthrough
     win_sim = AdventureGameSimulation('game_data.json', 1, win_walkthrough)
     win_sim.run()
-    # assert expected_log == win_sim.get_id_log()
+    assert expected_log == win_sim.get_id_log()
 
     # Create a list of all the commands needed to walk through your game to reach a 'game over' state
     lose_demo = []
@@ -103,20 +111,25 @@ if __name__ == "__main__":
     # lose_sim = AdventureGameSimulation('game_data.json', 1, lose_demo)
     # assert expected_log == lose_sim.get_id_log()
 
-    # TODO: Add code below to provide walkthroughs that show off certain features of the game
-    # TODO: Create a list of commands involving visiting locations, picking up items, and then
-    #   checking the inventory, your list must include the "inventory" command at least once
-    # inventory_demo = [..., "inventory", ...]
-    # expected_log = []
-    # assert expected_log == AdventureGameSimulation(...)
+    inventory_demo = ["pickup notebook", "go south", "pickup scrap paper", "go east", "search bookshelves", "go west",
+                      "go west", "search bookshelves", "inventory"]
+    expected_log = [1, 1, 2, 2, 3, 3, 2, 8]
+    inventory_sim = AdventureGameSimulation('game_data.json', 1, inventory_demo)
+    inventory_sim.run()
+    assert expected_log == inventory_sim.get_id_log()
 
-    # scores_demo = [..., "score", ...]
-    # expected_log = []
-    # assert expected_log == AdventureGameSimulation(...)
+    scores_demo = ["go south", "go east", "search bookshelves", "score", "go west", "go south", "go south",
+                   "talk to professor", "score"]
+    expected_log = [1, 2, 3, 3, 2, 9, 7]
+    scores_demo = AdventureGameSimulation('game_data.json', 1, scores_demo)
+    scores_demo.run()
+    assert expected_log == scores_demo.get_id_log()
 
-    # Add more enhancement_demos if you have more enhancements
-    # enhancement1_demo = [...]
-    # expected_log = []
-    # assert expected_log == AdventureGameSimulation(...)
-
-    # Note: You can add more code below for your own testing purposes
+    # Showcase buy command
+    # Simulation will "buy" cash by exchanging scrap paper
+    # Simulation will then "buy" coffee by exchanging cash for coffee
+    buy_demo = ["go south", "pickup scrap paper", "inventory", "throw out scrap paper", "inventory", "go east", "go east", "buy coffee", "inventory"]
+    expected_log = [1, 2, 2, 2, 3, 4]
+    buy_demo = AdventureGameSimulation('game_data.json', 1, buy_demo)
+    buy_demo.run()
+    assert expected_log == buy_demo.get_id_log()
