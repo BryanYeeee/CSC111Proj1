@@ -152,7 +152,7 @@
     {
       "name": "comicbook",
       "description": "The comic book is a fun book to kill time, but looks distracting.",
-      "command_name": "read comic book",
+      "command_name": "read comicbook",
       "use_command": ["talk", "", "You decide to get distracted and read your comic book.", true, [], -1000]
     }
   ]
