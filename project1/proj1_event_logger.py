@@ -53,7 +53,7 @@ class Event:
     loc_id_num: int
     command_name: str
     command: Command
-    new_loc: bool = None
+    new_loc: Optional[bool] = None
     next: Optional[Event] = None
     prev: Optional[Event] = None
 
@@ -73,8 +73,8 @@ class EventList:
         - last.next is None
         - last.next_command is None
     """
-    first: Optional[Event]
-    last: Optional[Event]
+    first: Optional[Event] = None
+    last: Optional[Event] = None
 
     def __init__(self) -> None:
         """Initialize a new empty event list."""
