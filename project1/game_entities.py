@@ -120,13 +120,15 @@ class Player:
 
     Instance Attributes:
         - # TODO Describe each instance attribute here
-        - _inventory: list of Items that the Player is holding
         - score: Integer of the Player's score
         - moves_left: Integer number of moves left
 
     Representation Invariants:
         - # TODO Describe any necessary representation invariants
+        - moves_left > = 0
     """
+    # Private Instance Attributes:
+    #   - _inventory: list of Items that the Player is holding
     _inventory: list[Item]
     score: int
     moves_left: int
