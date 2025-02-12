@@ -15,7 +15,7 @@
       "id": 2,
       "name": "Courtyard",
       "brief_description": "A spacious courtyard surrounded by campus buildings, bustling with students amidst vibrant flower beds and towering oak trees.",
-      "long_description": "You step into the courtyard, a spacious open area surrounded by the various buildings of the campus. The ground is paved with cobblestones, and well-tended flower beds add splashes of color to the scenery. Students are scattered around, some engaged in lively conversations on benches, while others are engrossed in their studies under the shade of mature oak trees. The air is filled with the subtle scent of blooming flowers and freshly cut grass. To the north, you see the entrance to the dormitory; to the east lies the library; the cafeteria is to the south; and to the west, you notice the pathway leading to the CS lounge. A gentle breeze rustles the leaves, creating a serene atmosphere that invites you to explore further or simply take a moment to relax.",
+      "long_description": "You step into the courtyard, a spacious open area surrounded by the various buildings of the campus. The ground is paved with cobblestones, and well-tended flower beds add splashes of color to the scenery. Students are scattered around, some engaged in lively conversations on benches, while others are engrossed in their studies under the shade of mature oak trees. The air is filled with the subtle scent of blooming flowers and freshly cut grass. To the north, you see the entrance to the dorm room; to the east lies the library; the class building is to the south; and to the west, you notice the pathway leading to the CS lounge. A gentle breeze rustles the leaves, creating a serene atmosphere that invites you to explore further or simply take a moment to relax.",
       "commands": {
         "go north": ["go", 1],
         "go east": ["go", 3],
@@ -29,89 +29,88 @@
     {
       "id": 3,
       "name": "Library",
-      "brief_description": "3 brief",
-      "long_description": "3 long",
+      "brief_description": "A quiet library filled with rows of bookshelves, study tables, and the faint rustle of pages turning.",
+      "long_description": "You enter the library, a haven of knowledge and tranquility. Tall bookshelves stretch from floor to ceiling, laden with volumes spanning every subject imaginable. The soft glow of reading lamps illuminates cozy study tables, where students are immersed in their work. The air carries the subtle scent of aged paper and ink. To the west, the exit leads back to the courtyard; to the east, a passageway connects to the cafeteria. A sense of calm envelops you, inviting exploration of the vast resources housed within these walls.",
       "commands": {
         "go west": ["go", 2],
         "go east": ["go", 4],
         "use printer": ["buy", ["scrap paper", "cash"], "You printed some blah blah blah"],
         "search bookshelves": ["pickup", "textbook"],
-        "search stationery": ["pickup", "whiteboard marker"]
       },
-      "items": ["textbook", "whiteboard marker"]
+      "items": ["textbook"]
     },
     {
       "id": 4,
       "name": "Cafeteria",
-      "brief_description": "4 brief",
-      "long_description": "4 long",
+      "brief_description": "A bustling cafeteria filled with the aroma of freshly brewed coffee and a variety of culinary delights.",
+      "long_description": "You step into the cafeteria, where the lively chatter of students and the clinking of utensils create a vibrant atmosphere. The enticing aroma of freshly brewed coffee and an array of culinary offerings fill the air. To the west, a passage leads back to the library.",
       "commands": {
         "go west": ["go", 3],
-        "buy coffee": ["buy", ["cash", "coffee"], "You bought a large ice coffee for only 1 dollar!!!"]
+        "buy coffee": ["buy", ["cash", "coffee"], "You bought a large ice coffee for only 1 dollar!!!"],
+        "talk to upper year student": ["talk", "", "Hey, I heard you are doing some project. I got 100% on it so I think I could help. I didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
+        "exchange textbook for project tips": ["buy", ["textbook", "sticky note"], "Student: Here, ill write it on this sticky note for you", false]
       },
       "items": ["coffee", "sticky note"]
     },
     {
       "id": 5,
       "name": "Classroom 2",
-      "brief_description": "5 brief",
-      "long_description": "5 long",
+      "brief_description": "A quiet classroom with rows of empty desks and a large whiteboard at the front.",
+      "long_description": "You enter Classroom 2, where rows of empty desks are neatly arranged, awaiting the next lecture. A senior is sitting in the back. To the west, a door leads back to the Class Building.",
       "commands":
       {
         "go west": ["go", 9],
-        "talk to a student about the charger": ["talk","", "Hey! I saw a charger in Classroom 1 but the key is with the Professor"],
-        "talk to upper year student": ["talk", "", "Hey, I heard you are doing some project. I got 100% on it so I think I could help. I didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
-        "exchange textbook for project tips": ["buy", ["textbook", "sticky note"], "Student: Here, ill write it on this sticky note for you", false]
+        "talk to a student about the charger": ["talk","", "Hey! I saw a charger in classroom 1 but the key is with the Professor"]
       },
       "items": []
-    },
+    }
     {
       "id": 6,
       "name": "Classroom 1",
-      "brief_description": "6 brief",
-      "long_description": "6 long",
+      "brief_description": "A classroom equipped with various electronic devices and study materials.",
+      "long_description": "You enter Classroom 1, where desks are arranged in neat rows, each accompanied by a chair. The room is equipped with various electronic devices and study materials, creating an environment conducive to learning. To the east, a hallway leads back to the Class Building.",
       "commands":
       {
         "go east": ["go", 9],
-        "pickup charger": ["pickup", "charger", "Charger picked up", true, [], 2000]
+        "pickup Charger": ["pickup", "Charger", "Charger picked up", true, None, 2000]
       },
       "items": ["charger"]
     },
     {
       "id": 7,
       "name": "Prof Office",
-      "brief_description": "7 brief",
-      "long_description": "7 long",
+      "brief_description": "A quiet and formal office with shelves filled with academic papers. The professor is available for your help.",
+      "long_description": "You enter the professor’s office, a serene and professional space filled with the scent of old books and coffee. The room is neatly arranged, with a large wooden desk covered in papers, textbooks, and academic journals. The professor, known for their sharp intellect and discipline, sits at the desk, ready to offer guidance. Bookshelves line the walls, crammed with research materials and a few personal items. Certificates and awards hang proudly, showcasing the professor’s accomplishments. It’s a place of focus and learning, where academic challenges are met with thoughtful solutions. To the North, is the Class Building",
       "commands":
       {
         "go north": ["go", 9],
-        "talk to professor": ["unlock",9, "Prof: Hey Player! I have unlocked classroom 1", true, ["go west"], 1000]
+        "Unlock Classroom 1": ["unlock","", "Prof: Hey Player! I have unlocked classroom 1", true, None, 1000]
       },
       "items": []
     },
     {
       "id": 8,
       "name": "CS Lounge",
-      "brief_description": "8 brief",
-      "long_description": "8 long",
-      "commands": {
+      "brief_description": "A relaxed and social space where computer science students gather to unwind, study, and chat.",
+      "long_description": "You step into the CS Lounge, a cozy and lively area where computer science students gather to take a break or study together. The room is filled with soft couches and bean bags, scattered with laptops and books. A large whiteboard is on one side, covered with code and algorithms, while students are engrossed in conversations or typing away on their computers. The walls are decorated with tech posters and inspirational quotes. To the east, an open spaced courtyard is present",
+      "commands":
+      {
         "go east": ["go", 2],
-        "talk to half asleep student": ["talk", "", "Half Asleep Student: I'm so tired i need coffee", true, ["give half asleep student coffee"]],
-        "talk to group member": ["pickup", "USB", "Group member: Hi, heres your USB"],
-        "search bookshelves": ["pickup", "comic book"],
-        "give half asleep student coffee": ["buy", ["coffee", "lucky mug"], "Half Asleep Stuednt: thanks have this mug", false]
+        "Talk to a friend": ["pickup", "USB", "Picked up USB", true],
+        "Talk to a student": ["exchange", "lucky mug"],
+        "Look through the Bookshelf": ["pickup", "comic book", "Picked up Comic Book", true, None, -1000]
       },
-      "items": ["comic book", "lucky mug", "USB"]
+      "items": ["USB", "lucky mug"]
     },
     {
       "id": 9,
       "name": "Class Building",
-      "brief_description": "9 brief",
-      "long_description": "9 long",
+      "brief_description": "A busy academic building filled with classrooms, professors’ offices, and hallways buzzing with students.",
+      "long_description": "You find yourself in the Class Building, a central hub of activity on campus. The hallways are lined with classrooms, some filled with students preparing for lectures, others quiet and awaiting the next session. The air is filled with the sound of footsteps echoing off the walls as students rush between classes. The walls are decorated with academic posters and flyers for campus events. To the North, you enter the courtyard. To the east, you enter the classroom 2. To the west, you enter the classroom 1. To the south, you enter the Professor's office",
       "commands":
       {
         "go north": ["go", 2],
-        "go west": ["go", 6, "", false],
+        "go west": ["go", 6],
         "go east": ["go", 5],
         "go south": ["go", 7]
       },
@@ -122,8 +121,7 @@
     {
       "name": "notebook",
       "description": "Your notebook and todo list.",
-      "command_name": "read notebook",
-      "use_command": ["talk", "", "You need USB and Charger"]
+      "use_command": ["You need USB and Charger"]
     },
     {
       "name": "scrap paper",
@@ -138,11 +136,6 @@
     {
       "name": "textbook",
       "description": "A textbook on advanced quantum physics",
-      "use_command": ""
-    },
-    {
-      "name": "whiteboard marker",
-      "description": "A marker pen designed for writing on whiteboard",
       "use_command": ""
     },
     {
