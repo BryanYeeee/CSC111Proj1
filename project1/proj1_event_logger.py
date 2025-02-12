@@ -27,9 +27,6 @@ from typing import Optional
 from game_entities import Command
 
 
-# TODO: Copy/paste your ex1_event_logger code below, and modify it if needed to fit your game
-
-
 @dataclass
 class Event:
     """
@@ -50,7 +47,6 @@ class Event:
     # If you want to create a special type of Event for your game that requires a different
     # set of attributes, you can create new classes using inheritance, as well.
 
-    # TODO: Add attributes below based on the provided descriptions above.
     loc_id_num: int
     command_name: str
     command: Command
@@ -64,12 +60,10 @@ class EventList:
     A linked list of game events.
 
     Instance Attributes:
-        - # TODO add descriptions of instance attributes here
         - first: Event object representing the first game event
         - last: Event object representing the last game event
 
     Representation Invariants:
-        - # TODO add any appropriate representation invariants, if needed
         - first.prev is None
         - last.next is None
         - last.next_command is None
@@ -100,7 +94,6 @@ class EventList:
     def is_empty(self) -> bool:
         """Return whether this event list is empty."""
 
-        # TODO: Your code below
         return self.first is None
 
     def add_event(self, event: Event) -> None:
@@ -110,7 +103,6 @@ class EventList:
         """
         # Hint: You should update the previous node's <next_command> as needed
 
-        # TODO: Your code below
         cur_event = self.first
         if cur_event is None:
             self.first = event
@@ -129,7 +121,6 @@ class EventList:
 
         # Hint: The <next_command> and <next> attributes for the new last event should be updated as needed
 
-        # TODO: Your code below
         if self.first is None:
             return
         if self.first == self.last:
@@ -146,7 +137,6 @@ class EventList:
     def get_id_log(self) -> list[int]:
         """Return a list of all location IDs visited for each event in this list, in sequence."""
 
-        # TODO: Your code below
         id_list = []
         cur_event = self.first
         while cur_event is not None:
@@ -162,8 +152,8 @@ if __name__ == "__main__":
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    import python_ta
-    python_ta.check_all(config={
-         'max-line-length': 120,
-         'disable': ['R1705', 'E9998', 'E9999']
-     })
+    # import python_ta
+    # python_ta.check_all(config={
+    #     'max-line-length': 120,
+    #     'disable': ['R1705', 'E9998', 'E9999']
+    # })
