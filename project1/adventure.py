@@ -159,7 +159,7 @@ def use_command(the_command: Command, the_game: AdventureGame, the_player: Playe
 
     print("------------------------------------------------")
 
-    if the_command.score_change > 0:
+    if the_command.score_change != 0:
         the_player.change_score(the_command.score_change)
         print("You gained " + str(the_command.score_change) + " Score")
         print("------------------------------------------------")
