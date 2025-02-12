@@ -21,8 +21,6 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from dataclasses import dataclass
 from typing import Optional, Any
 
-from pygame.sprite import collide_mask
-
 
 @dataclass
 class Command:
@@ -31,7 +29,7 @@ class Command:
 
     Instance Attributes:
         - command_type: the type of command this command is
-        - available: whether or not the command is currently executable by the player
+        - available: whether the command is currently executable by the player
         - score_change: integer value representing the change in score when calling this command
         - command_text: the text displayed when this command is called, None if no text will be displayed
         - next_location: the id of the location Player will move to, None if Player remains still

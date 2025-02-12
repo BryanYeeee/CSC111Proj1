@@ -200,7 +200,10 @@ def undo_command(prev_event: Event, game: AdventureGame, player: Player, game_lo
 
     if prev_command.unlocked_commands is not None:
         for c in prev_command.unlocked_commands:
-            location.commands[c].available = False
+            if prev_command.command_type == 'unlock':
+                game.get_location(prev_command.unlock_location).commands[c].available = False
+            else:
+                location.commands[c].available = False
     game_log.remove_last_event()
     return
 
@@ -252,6 +255,8 @@ if __name__ == "__main__":
             print("-", action)
         for action in item_commands:
             print("-", action)
+
+        print("Moves Left: ", player.moves_left)
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()

@@ -36,9 +36,10 @@ class Event:
     A node representing one event in an adventure game.
 
     Instance Attributes:
-    - id_num: Integer id of this event's location
-    - description: Long description of this event's location
-    - next_command: String command which leads this event to the next event, None if this is the last game event
+    - loc_id_num: Integer id of this event's location
+    - command_name: The name of the command
+    - command: The Command object associated with the event
+    - new_loc: Boolean value which says if this event is firstly visited
     - next: Event object representing the next event in the game, or None if this is the last game event
     - prev: Event object representing the previous event in the game, None if this is the first game event
     """
