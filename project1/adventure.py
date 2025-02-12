@@ -35,6 +35,7 @@ class AdventureGame:
 
     Instance Attributes:
         - # TODO add descriptions of public instance attributes as needed
+        -
 
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
