@@ -72,7 +72,7 @@
       "commands":
       {
         "go east": ["go", 9],
-        "pickup Charger": ["pickup", "Charger", "Charger picked up", true, [], 2000]
+        "pickup charger": ["pickup", "charger", "", true, [], 2000]
       },
       "items": ["charger"]
     },
@@ -84,7 +84,7 @@
       "commands":
       {
         "go north": ["go", 9],
-        "Unlock Classroom 1": ["unlock","", "Prof: Hey Player! I have unlocked classroom 1", true, [], 1000]
+        "talk to professor": ["unlock", 9, "Prof: Hey Player! I have unlocked classroom 1", true, ["go west"], 1000]
       },
       "items": []
     },
@@ -105,12 +105,12 @@
     {
       "id": 9,
       "name": "Class Building",
-      "brief_description": "A busy academic building filled with classrooms, professors’ offices, and hallways buzzing with students.",
-      "long_description": "You find yourself in the Class Building, a central hub of activity on campus. The hallways are lined with classrooms, some filled with students preparing for lectures, others quiet and awaiting the next session. The air is filled with the sound of footsteps echoing off the walls as students rush between classes. The walls are decorated with academic posters and flyers for campus events. To the North, you enter the courtyard. To the east, you enter the classroom 2. To the west, you enter the classroom 1. To the south, you enter the Professor's office",
+      "brief_description": "A busy academic building filled with classrooms, professor offices, and hallways buzzing with students.",
+      "long_description": "You find yourself in the Class Building, a central hub of activity on campus. The hallways are lined with classrooms, some filled with students preparing for lectures, others quiet and awaiting the next session. The air is filled with the sound of footsteps echoing off the walls as students rush between classes. The walls are decorated with academic posters and flyers for campus events. To the North, you enter the courtyard. To the east, you enter the classroom 2. To the west, you enter the classroom 1. To the south, you enter the Professors office",
       "commands":
       {
         "go north": ["go", 2],
-        "go west": ["go", 6],
+        "go west": ["go", 6, "", false],
         "go east": ["go", 5],
         "go south": ["go", 7]
       },

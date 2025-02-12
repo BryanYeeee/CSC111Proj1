@@ -138,8 +138,8 @@ class Player:
         """
 
         self._inventory = []
-        score = 0
-        moves_left = 12
+        self.score = 0
+        self.moves_left = 12
 
     def has_item(self, item: Item) -> bool:
         """Return whether the Player has an item or not"""

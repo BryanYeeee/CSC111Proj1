@@ -23,7 +23,7 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from __future__ import annotations
 from proj1_event_logger import Event, EventList
 from adventure import AdventureGame
-from game_entities import Location
+from game_entities import Command, Location, Item, Player
 
 
 class AdventureGameSimulation:
@@ -32,8 +32,10 @@ class AdventureGameSimulation:
     # Private Instance Attributes:
     #   - _game: The AdventureGame instance that this simulation uses.
     #   - _events: A collection of the events to process during the simulation.
+    #   - _player: The Player instance that the simulation uses
     _game: AdventureGame
     _events: EventList
+    _player: Player
 
     # TODO: Copy/paste your code from ex1_simulation below, and make adjustments as needed
     def __init__(self, game_data_file: str, initial_location_id: int, commands: list[str]) -> None:
@@ -45,12 +47,7 @@ class AdventureGameSimulation:
         """
         self._events = EventList()
         self._game = AdventureGame(game_data_file, initial_location_id)
-
-        # TODO: Add first event (initial location, no previous command)
-        # Hint: self._game.get_location() gives you back the current location
-        start_location = self._game.get_location(initial_location_id)
-        first_event = Event(id_num=start_location.id_num, description=start_location.description)
-        self._events.add_event(first_event)
+        self._player = Player()
 
         # TODO: Generate the remaining events based on the commands and initial location
         # Hint: Call self.generate_events with the appropriate arguments
