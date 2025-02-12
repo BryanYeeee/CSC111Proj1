@@ -35,10 +35,14 @@ class AdventureGame:
 
     Instance Attributes:
         - # TODO add descriptions of public instance attributes as needed
-        -
+        - current_location_id: the location id of the current location
+        - ongoing: keeps the loop running till the moves_left > = 0
+        - WIN_CONDITION: the winning condition in a list
 
     Representation Invariants:
         - # TODO add any appropriate representation invariants as needed
+        - len(_locations) > 0
+        - len(_items) > 0
     """
 
     # Private Instance Attributes (do NOT remove these two attributes):
@@ -94,7 +98,7 @@ class AdventureGame:
         items = {}
         # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above
         for item_data in data['items']:
-            if not('use_command' in item_data):
+            if not ('use_command' in item_data):
                 item_obj = Item(item_data['name'], item_data['description'])
             else:
                 item_obj = Item(item_data['name'], item_data['description'], item_data["command_name"], item_data['use_command'])
@@ -171,7 +175,7 @@ def use_command(command: Command, game: AdventureGame, player: Player, location:
     print("------------------------------------------------")
 
     if command.unlocked_commands is not None:
-        for c in command.unlocked_commands:  # TODO: NEED DOCSTRING FOR THIS
+        for c in command.unlocked_commands:
             if command.command_type == 'unlock':
                 game.get_location(command.unlock_location).commands[c].available = True
             else:
