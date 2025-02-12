@@ -50,7 +50,7 @@
       "id": 5,
       "name": "Classroom 2",
       "brief_description": "A quiet classroom with rows of empty desks and a large whiteboard at the front.",
-      "long_description": "You enter Classroom 2, where rows of empty desks are neatly arranged, awaiting the next lecture. \nA senior is sitting in the back. \nTo the west, a door leads back to the Class Building.",
+      "long_description": "You enter Classroom 2, where rows of empty desks are neatly arranged, awaiting the next lecture. \nA senior and a student are sitting in the back. \nTo the west, a door leads back to the Class Building.",
       "commands":
       {
         "go west": ["go", 9],
