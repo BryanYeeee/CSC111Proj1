@@ -3,8 +3,8 @@
     {
       "id": 1,
       "name": "Dorm Room",
-      "brief_description": "1 brief",
-      "long_description": "1 long",
+      "brief_description": "Your cozy dorm room, a small space filled with personal belongings and study materials.",
+      "long_description": "You are in your dorm room, a compact yet comfortable space that serves as your personal sanctuary. The walls are adorned with posters of your favorite bands and motivational quotes. A neatly made bed occupies one corner, while a cluttered desk covered with textbooks, notebooks, and a dead laptop sits under the window. The soft hum of the mini-fridge adds a soothing background noise. This is where you plan your day, study for exams, and occasionally escape into the world of your favorite novels.",
       "commands": {
         "go south": ["go", 2],
         "pickup notebook": ["pickup", "notebook"]
@@ -14,13 +14,14 @@
     {
       "id": 2,
       "name": "Courtyard",
-      "brief_description": "2 brief",
-      "long_description": "2 long",
+      "brief_description": "A spacious courtyard surrounded by campus buildings, bustling with students amidst vibrant flower beds and towering oak trees.",
+      "long_description": "You step into the courtyard, a spacious open area surrounded by the various buildings of the campus. The ground is paved with cobblestones, and well-tended flower beds add splashes of color to the scenery. Students are scattered around, some engaged in lively conversations on benches, while others are engrossed in their studies under the shade of mature oak trees. The air is filled with the subtle scent of blooming flowers and freshly cut grass. To the north, you see the entrance to the dormitory; to the east lies the library; the cafeteria is to the south; and to the west, you notice the pathway leading to the CS lounge. A gentle breeze rustles the leaves, creating a serene atmosphere that invites you to explore further or simply take a moment to relax.",
       "commands": {
         "go north": ["go", 1],
         "go east": ["go", 3],
-        "go west": ["go", 5],
-        "pickup scrap paper": ["pickup", "scrap paper", "", true, ["throw out scrap paper"]],
+        "go south": ["go", 9],
+        "go west": ["go", 8],
+        "pickup scrap paper": ["pickup", "scrap paper", "", true, ["throw out scrap paper"], 1000],
         "throw out scrap paper": ["buy", ["scrap paper", "cash"], "After throwing out your scrap paper, you discover some cash laying in the trash can", false]
       },
       "items": ["scrap paper"]
@@ -33,6 +34,7 @@
       "commands": {
         "go west": ["go", 2],
         "go east": ["go", 4],
+        "use printer": ["buy", ["scrap paper", "cash"], "You printed some blah blah blah"],
         "search bookshelves": ["pickup", "textbook"],
         "search stationery": ["pickup", "whiteboard marker"]
       },
@@ -46,38 +48,75 @@
       "commands": {
         "go west": ["go", 3],
         "buy coffee": ["buy", ["cash", "coffee"], "You bought a large ice coffee for only 1 dollar!!!"],
-        "talk to upper year student": ["talk", "", "Student: Hey, I heard you are doing some project. I got 100% on it so I think I could help. I didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
+        "talk to upper year student": ["talk", "", "Hey, I heard you are doing some project. I got 100% on it so I think I could help. I didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
         "exchange textbook for project tips": ["buy", ["textbook", "sticky note"], "Student: Here, ill write it on this sticky note for you", false]
       },
       "items": ["coffee", "sticky note"]
-    },
+    }
     {
       "id": 5,
-      "name": "CS Lounge",
+      "name": "Classroom 2",
       "brief_description": "5 brief",
       "long_description": "5 long",
-      "commands": {
-        "go east": ["go", 2],
-        "talk to half asleep student": ["talk", "", "Half Asleep Student: I'm so tired i need coffee", true, ["give half asleep student coffee"]],
-        "talk to group member": ["pickup", "USB", "Group member: Hi, heres your USB"],
-        "search bookshelves": ["pickup", "comic book"],
-        "give half asleep student coffee": ["buy", ["coffee", "lucky mug"], "Half Asleep Stuednt: thanks have this mug", false]
+      "commands":
+      {
+        "go west": ["go", 9],
+        "talk to a student about the charger": ["talk","", "Hey! I saw a charger in classroom 1 but the key is with the Professor"], true, None]
       },
-      "items": ["comic book", "lucky mug", "USB"]
+      "items": []
     }
     {
       "id": 6,
-      "name": "Class Building",
+      "name": "Classroom 1",
       "brief_description": "6 brief",
       "long_description": "6 long",
-      "commands": {
-        "go north": ["go", 2]
-        "go west": ["go", 7]
-        "go east": ["go", 8]
-        "go south": ["go", 9]
-        
+      "commands":
+      {
+        "go east": ["go", 9],
+        "pickup Charger": ["pickup", "Charger", "Charger picked up", true, None, 2000]
+      },
+      "items": ["charger"]
+    },
+    {
+      "id": 7,
+      "name": "Prof Office",
+      "brief_description": "7 brief",
+      "long_description": "7 long",
+      "commands":
+      {
+        "go north": ["go", 9],
+        "Unlock Classroom 1": ["unlock","", "Prof: Hey Player! I have unlocked classroom 1", true, None, 1000]
+      },
+      "items": []
+    },
+    {
+      "id": 8,
+      "name": "CS Lounge",
+      "brief_description": "8 brief",
+      "long_description": "8 long",
+      "commands":
+      {
+        "go east": ["go", 2],
+        "Talk to a friend": ["pickup", "USB", "Picked up USB", true],
+        "Talk to a student": ["exchange", "lucky mug"],
+        "Look through the Bookshelf": ["pickup", "comic book", "Picked up Comic Book", true, None, -1000]
+      },
+      "items": ["USB", "lucky mug"]
+    },
+    {
+      "id": 9,
+      "name": "Class Building",
+      "brief_description": "9 brief",
+      "long_description": "9 long",
+      "commands":
+      {
+        "go north": ["go", 2],
+        "go west": ["go", 6],
+        "go east": ["go", 5],
+        "go south": ["go", 7]
+      },
+      "items": []
     }
-          
   ],
   "items": [
     {
@@ -117,17 +156,22 @@
     },
     {
       "name": "lucky mug",
-      "description": "This mug looks like itll help your project",
+      "description": "Jachpot!! A lucky mug increases the score by 2000 points",
       "use_command": ""
     },
     {
-      "name": "comic book",
-      "description": "Comic boooook",
+      "name": "charger",
+      "description": "The charger is one of the two items to succesfully complete the game",
       "use_command": ""
     },
     {
       "name": "USB",
-      "description": "USB files",
+      "description": "The USB is one of the two items to succesfully complete the game",
+      "use_command": ""
+    },
+    {
+      "name": "comic book",
+      "description": "The comic book is a fun book but distracts you and decreases your score.",
       "use_command": ""
     }
   ]
