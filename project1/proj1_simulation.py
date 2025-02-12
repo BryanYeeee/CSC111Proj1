@@ -23,7 +23,7 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from __future__ import annotations
 from proj1_event_logger import Event, EventList
 from adventure import AdventureGame, use_command, use_menu
-from game_entities import Command, Location, Item, Player
+from game_entities import Player
 
 
 class AdventureGameSimulation:
@@ -38,7 +38,6 @@ class AdventureGameSimulation:
     _player: Player
     _commands: list[str]
 
-    # TODO: Copy/paste your code from ex1_simulation below, and make adjustments as needed
     def __init__(self, game_data_file: str, initial_location_id: int, commands: list[str]) -> None:
         """Initialize a new game simulation based on the given game data, that runs through the given commands.
 
@@ -71,7 +70,7 @@ class AdventureGameSimulation:
             menu = ["look", "inventory", "score", "undo", "log", "quit"]
 
             if choice in menu:
-                use_menu(choice, self._game, self._player, self._events)
+                use_menu(choice, self._game, self._player, self._events, location)
             else:
                 if choice in item_commands:
                     command = self._game.get_item(choice.split(" ")[1]).use_command
@@ -89,27 +88,24 @@ if __name__ == "__main__":
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'disable': ['R1705', 'E9998', 'E9999']
+    })
 
-    # TODO: Modify the code below to provide a walkthrough of commands needed to win and lose the game
     win_walkthrough = ["go south", "go south", "go south", "talk to professor", "go north", "go west", "pickup charger",
                        "go east", "go north", "go west", "talk to group member", "go east", "go north",
                        "submit project"]
     expected_log = [1, 2, 9, 7, 7, 9, 6, 6, 9, 2, 8, 8, 2,
-                    1]  # Update this log list to include the IDs of all locations that would be visited
-    # Uncomment the line below to test your walkthrough
+                    1]
     win_sim = AdventureGameSimulation('game_data.json', 1, win_walkthrough)
     win_sim.run()
     assert expected_log == win_sim.get_id_log()
 
-    # Create a list of all the commands needed to walk through your game to reach a 'game over' state
-    lose_demo = ["go south", "go east", "go east", "go west", "go west", "go west", "go east", "go south", "go east", "go west", "go south", "go north", "go west", "go east", "go north"]
-    expected_log = [1, 2, 3, 4, 3, 2, 8, 2, 9, 5, 9, 7, 9, 6, 9]  # Update this log list to include the IDs of all locations that would be visited
-    # Uncomment the line below to test your demo
+    lose_demo = ["go south", "go east", "go east", "go west", "go west", "go west", "go east", "go south", "go east",
+                 "go west", "go south", "go north", "go west", "go east", "go north"]
+    expected_log = [1, 2, 3, 4, 3, 2, 8, 2, 9, 5, 9, 7, 9, 6, 9]
     lose_sim = AdventureGameSimulation('game_data.json', 1, lose_demo)
     lose_sim.run()
     assert expected_log == lose_sim.get_id_log()
@@ -131,7 +127,8 @@ if __name__ == "__main__":
     # Showcase buy command
     # Simulation will "buy" cash by exchanging scrap paper
     # Simulation will then "buy" coffee by exchanging cash for coffee
-    buy_demo = ["go south", "pickup scrap paper", "inventory", "throw out scrap paper", "inventory", "go east", "go east", "buy coffee", "inventory"]
+    buy_demo = ["go south", "pickup scrap paper", "inventory", "throw out scrap paper", "inventory", "go east",
+                "go east", "buy coffee", "inventory"]
     expected_log = [1, 2, 2, 2, 3, 4]
     buy_demo = AdventureGameSimulation('game_data.json', 1, buy_demo)
     buy_demo.run()

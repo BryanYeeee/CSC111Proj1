@@ -19,28 +19,21 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 """
 from __future__ import annotations
 import json
-from typing import Optional
+from typing import Any, Optional
 
 from game_entities import Command, Location, Item, Player
 from proj1_event_logger import Event, EventList
-
-
-# Note: You may add in other import statements here as needed
-
-# Note: You may add helper functions, classes, etc. below as needed
 
 
 class AdventureGame:
     """A text adventure game class storing all location, item and map data.
 
     Instance Attributes:
-        - # TODO add descriptions of public instance attributes as needed
         - current_location_id: the location id of the current location
         - ongoing: keeps the loop running till the moves_left > = 0
         - WIN_CONDITION: the winning condition in a list
 
     Representation Invariants:
-        - # TODO add any appropriate representation invariants as needed
         - len(_locations) > 0
         - len(_items) > 0
     """
@@ -51,31 +44,20 @@ class AdventureGame:
     #   - _items: a list of Item objects, representing all items in the game.
     _locations: dict[int, Location]
     _items: dict[str, Item]
-    current_location_id: int  # Suggested attribute, can be removed
-    ongoing: bool  # Suggested attribute, can be removed
-    WIN_CONDITION = [1, "charger", "USB"]
+    current_location_id: int
+    ongoing: bool
+    WIN_CONDITION: list[Any] = [1, "charger", "USB"]
 
     def __init__(self, game_data_file: str, initial_location_id: int) -> None:
         """
         Initialize a new text adventure game, based on the data in the given file, setting starting location of game
         at the given initial location ID.
-        (note: you are allowed to modify the format of the file as you see fit)
-
         Preconditions:
         - game_data_file is the filename of a valid game data JSON file
         """
 
-        # NOTES:
-        # You may add parameters/attributes/methods to this class as you see fit.
-
-        # Requirements:
-        # 1. Make sure the Location class is used to represent each location.
-        # 2. Make sure the Item class is used to represent each item.
-
-        # Suggested helper method (you can remove and load these differently if you wish to do so):
         self._locations, self._items = self._load_game_data(game_data_file)
 
-        # Suggested attributes (you can remove and track these differently if you wish to do so):
         self.current_location_id = initial_location_id  # game begins at this location
         self.ongoing = True  # whether the game is ongoing
 
@@ -96,12 +78,12 @@ class AdventureGame:
             locations[loc_data['id']] = location_obj
 
         items = {}
-        # TODO: Add Item objects to the items list; your code should be structured similarly to the loop above
         for item_data in data['items']:
-            if not ('use_command' in item_data):
+            if 'use_command' not in item_data:
                 item_obj = Item(item_data['name'], item_data['description'])
             else:
-                item_obj = Item(item_data['name'], item_data['description'], item_data["command_name"], item_data['use_command'])
+                item_obj = Item(item_data['name'], item_data['description'], item_data["command_name"],
+                                item_data['use_command'])
             items[item_data['name']] = item_obj
 
         return locations, items
@@ -111,7 +93,6 @@ class AdventureGame:
         If no ID is provided, return the Location object associated with the current location.
         """
 
-        # TODO: Complete this method as specified
         if loc_id is None:
             loc_id = self.current_location_id
         return self._locations[loc_id]
@@ -125,106 +106,104 @@ class AdventureGame:
         return self._items[item_name]
 
 
-def use_menu(choice: str, game: AdventureGame, player: Player, game_log: EventList):
-    """ Use menu action
-    """
-    if choice == "undo":
+def use_menu(option: str, the_game: AdventureGame, the_player: Player, the_game_log: EventList,
+             the_location: Location) -> None:
+    """ Use menu action"""
+    if option == "undo":
         if game_log.is_empty():
             print("There is no events to undo")
             return
-        undo_command(game_log.get_last_event(), game, player, game_log)
+        undo_command(the_game_log.get_last_event(), the_game, the_player, the_game_log, the_location)
         return
 
     print("------------------------------------------------")
-    if choice == "look":
-        print(location.name + ":")
-        print(location.long_description)
-    elif choice == "log":
-        game_log.display_events()
-    elif choice == "inventory":
-        player.show_inventory()
-    elif choice == "score":
-        print("Score: " + str(player.score))
-    elif choice == "quit":
+    if option == "look":
+        print(the_location.name + ":")
+        print(the_location.long_description)
+    elif option == "log":
+        the_game_log.display_events()
+    elif option == "inventory":
+        the_player.show_inventory()
+    elif option == "score":
+        print("Score: " + str(the_player.score))
+    elif option == "quit":
         print("Quiting Game...")
-        game.ongoing = False
+        the_game.ongoing = False
     print("------------------------------------------------")
 
 
-def use_command(command: Command, game: AdventureGame, player: Player, location: Location) -> bool:
-    """ Use command, returns true if succesful
-    """
+def use_command(the_command: Command, the_game: AdventureGame, the_player: Player, the_location: Location) -> bool:
+    """ Use command, returns true if succesful"""
     print("------------------------------------------------")
-    if command.command_type == 'go':
-        game.current_location_id = command.next_location
-        player.change_moves(-1)
+    if the_command.command_type == 'go':
+        the_game.current_location_id = the_command.next_location
+        the_player.change_moves(-1)
         print("A move was used")
         print("------------------------------------------------")
         return True
 
-    if command.command_type == 'buy':
-        cost_item = game.get_item(command.cost)
-        if not player.has_item(cost_item):
+    if the_command.command_type == 'buy':
+        cost_item = the_game.get_item(the_command.cost)
+        if not the_player.has_item(cost_item):
             print("You are missing a required item, " + cost_item.name)
             return False
-        player.remove_item(cost_item)
-    if command.command_type == 'pickup' or command.command_type == 'buy':
-        command.available = False
-        command.print_command_text()
-        item = game.get_item(command.item)
-        player.give_item(item)
-    elif command.command_type == 'talk' or command.command_type == 'unlock':
-        command.available = False
-        command.print_command_text()
+        the_player.remove_item(cost_item)
+    if the_command.command_type in {'pickup', 'buy'}:
+        the_command.available = False
+        the_command.print_command_text()
+        item = the_game.get_item(the_command.item)
+        the_player.give_item(item)
+    elif the_command.command_type in {'talk', 'unlock'}:
+        the_command.available = False
+        the_command.print_command_text()
 
     print("------------------------------------------------")
 
-    if command.score_change > 0:
-        player.change_score(command.score_change)
-        print("You gained " + str(command.score_change) + " Score")
+    if the_command.score_change > 0:
+        the_player.change_score(the_command.score_change)
+        print("You gained " + str(the_command.score_change) + " Score")
         print("------------------------------------------------")
 
-    if command.unlocked_commands is not None:
-        for c in command.unlocked_commands:
-            if command.command_type == 'unlock':
-                game.get_location(command.unlock_location).commands[c].available = True
+    if the_command.unlocked_commands is not None:
+        for c in the_command.unlocked_commands:
+            if the_command.command_type == 'unlock':
+                the_game.get_location(the_command.unlock_location).commands[c].available = True
             else:
-                location.commands[c].available = True
+                the_location.commands[c].available = True
     return True
 
 
-def undo_command(prev_event: Event, game: AdventureGame, player: Player, game_log: EventList):
-    """Undo previous commmand
-
-    """
+def undo_command(prev_event: Event, the_game: AdventureGame, the_player: Player, the_game_log: EventList,
+                 the_location: Location) -> None:
+    """Undo previous commmand"""
     prev_command = prev_event.command
     prev_command.available = True
     print("Undoing: " + prev_event.command_name)
     if prev_event.new_loc:
-        game.get_location(prev_event.loc_id_num).visited = False
+        the_game.get_location(prev_event.loc_id_num).visited = False
     if new_location:
-        location.visited = False
+        the_location.visited = False
     if prev_command.command_type == 'go':
-        game.current_location_id = prev_event.loc_id_num
-        player.change_moves(1)
+        the_game.current_location_id = prev_event.loc_id_num
+        the_player.change_moves(1)
     elif prev_command.command_type == 'pickup':
-        item = game.get_item(prev_command.item)
-        player.remove_item(item)
+        item = the_game.get_item(prev_command.item)
+        the_player.remove_item(item)
     elif prev_command.command_type == 'buy':
-        cost_item = game.get_item(command.cost)
-        player.give_item(cost_item)
+        cost_item = the_game.get_item(prev_command.cost)
+        the_player.give_item(cost_item)
 
-        item = game.get_item(command.item)
-        player.remove_item(item)
+        item = the_game.get_item(prev_command.item)
+        the_player.remove_item(item)
 
-    player.change_score(prev_command.score_change*-1)
+    the_player.change_score(prev_command.score_change * -1)
     if prev_command.unlocked_commands is not None and location is not None:
         for c in prev_command.unlocked_commands:
             if prev_command.command_type == 'unlock':
-                game.get_location(prev_command.unlock_location).commands[c].available = False
+                the_game.get_location(prev_command.unlock_location).commands[c].available = False
             else:
-                location.commands[c].available = False
-    game_log.remove_last_event()
+                the_location.commands[c].available = False
+    the_game_log.remove_last_event()
     return
 
 
@@ -233,11 +212,11 @@ if __name__ == "__main__":
     # When you are ready to check your work with python_ta, uncomment the following lines.
     # (Delete the "#" and space before each line.)
     # IMPORTANT: keep this code indented inside the "if __name__ == '__main__'" block
-    # import python_ta
-    # python_ta.check_all(config={
-    #     'max-line-length': 120,
-    #     'disable': ['R1705', 'E9998', 'E9999']
-    # })
+    import python_ta
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'disable': ['R1705', 'E9998', 'E9999']
+    })
     player = Player()
     game_log = EventList()  # This is REQUIRED as one of the baseline requirements
     game = AdventureGame('game_data.json', 1)  # load data, setting initial location ID to 1
@@ -245,19 +224,11 @@ if __name__ == "__main__":
     choice = None
 
     print("================================================")
-    # Note: You may modify the code below as needed; the following starter code is just a suggestion
     while game.ongoing:
-        # Note: If the loop body is getting too long, you should split the body up into helper functions
-        # for better organization. Part of your marks will be based on how well-organized your code is.
 
         location = game.get_location()
         new_location = False
 
-        # TODO: Add new Event to game log to represent current game location
-        #  Note that the <choice> variable should be the command which led to this event
-
-        # TODO: Depending on whether or not it's been visited before,
-        #  print either full description (first time visit) or brief description (every subsequent visit) of location
         print(location.name + ":")
         if location.visited:
             print(location.brief_description)
@@ -295,10 +266,9 @@ if __name__ == "__main__":
 
         if choice in menu:
             # Handle menu actions
-            use_menu(choice, game, player, game_log)
+            use_menu(choice, game, player, game_log, location)
         else:
             # Handle non-menu actions
-            command = None
             if choice in item_commands:
                 command = game.get_item(choice.split(" ")[1]).use_command
             else:

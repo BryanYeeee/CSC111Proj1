@@ -29,10 +29,10 @@ List of commands: ["go south", "go south", "go south", "talk to professor", "go 
 
 \section*{Lose condition(s)}
 Description of how to lose the game:\\
-The lose condition of this game is when the player runs out of moves (by default, 14 moves). A move occurs whenever the player uses the "go" command to enter a new location. However, any commands used within a room do not count as moves.
+The lose condition of this game is when the player runs out of moves (by default, 15 moves). A move occurs whenever the player uses the "go" command to enter a new location. However, any commands used within a room do not count as moves.
 \\\\
 List of commands:\\
-{["go south", "go east", "go east", "go west", "go west", "go south", "go east", "go west", "go south", "go north", "go west", "go east", "go north", "go west", "go east"]}\\
+{["go south", "go east", "go east", "go west", "go west", "go west", "go east", "go south", "go east", "go west", "go south", "go north", "go west", "go east", "go north"]}\\
 In this example, the player attempted to visit every location, but ran out of moves in the process resulting in the game being a loss.
 \\\\
 Which parts of your code are involved in this functionality:\\
@@ -85,7 +85,7 @@ Note: Not all items can be used at any given moment, and can only be used in cer
             \item Pickup command: "check bookshelves"
             \item Use command: "exchange textbook for project tips"
             \begin{itemize}
-                \item Used in Location 4, Cafe
+                \item Used in Location 5, Classroom 2
             \end{itemize}
         \end{itemize}
     \end{itemize}
@@ -97,12 +97,7 @@ Note: Not all items can be used at any given moment, and can only be used in cer
             \begin{itemize}
                 \item Will only give player item if the player has Item 3, Cash
             \end{itemize}
-            \item Use command 1: "drink coffee"
-            \begin{itemize}
-                \item Used anywhere
-                \item Gives player 2 extra moves
-            \end{itemize}
-            \item Use command 2: "give half asleep student coffee"
+            \item Use command: "give half asleep student coffee"
             \begin{itemize}
                 \item Used in Location 8, CS Lounge
             \end{itemize}
@@ -196,8 +191,7 @@ Score from Lucky Mug: 2000 Score
             \item Talk to the half asleep student
             \item Give the student the item, coffee and recieve the item, lucky mug (+2000 score)
         \end{itemize}
-Commands: ["go south", "pickup scrap paper", "throw out scrap paper", "go east", "go east", "buy coffee", "go west", "go west", "go west", "talk to half asleep student", "give half asleep student coffee"]\\
-Note: When the player obtains the coffee, they have to decide whether they want to save it in order to get the lucky mug, or drink the coffee themselves to obtain an extra 2 moves.
+Commands: ["go south", "pickup scrap paper", "throw out scrap paper", "go east", "go east", "buy coffee", "go west", "go west", "go west", "talk to half asleep student", "give half asleep student coffee"]
 \\\\\\
 Score from Laptop Charger (mandatory to complete the game): 4000 Score
         \begin{itemize}
@@ -214,13 +208,13 @@ Score from USB (mandatory to complete the game): 3000 Score
             \item Talk to the group member to obtain the USB (+3000 score)
         \end{itemize}
 Commands: ["go south", "go west", "talk to group member"]
-\\\\\\
-
+\\\\
     \item Copy the list you assigned to \texttt{scores\_demo} in the \texttt{project1\_simulation.py} file into this section of the report:
-
+List of Commands: ["go south", "go east", "search bookshelves", "score", "go west", "go south", "go south","talk to professor", "score"]\\
+This example gets the textbook from the library and asks the prof to unlock Classroom 1.
 
     \item Which parts of your code (file, class, function/method) are involved in handling the \texttt{score} functionality:\\
-        In the \texttt{game\_data.json} file, where the list of available commands are listed out, each command that would result in a change of score has a parameter indicating how much score the player will earn upon calling the command. In \texttt{adventure.py}, where the main game loop is executed, calling a command (the use$\_$command() method) will check to see if the chosen command has a score change or not. If it does, then it will update the player's score attribute using the ******** method.
+        In the \texttt{game\_data.json} file, where the list of available commands are listed out, each command that would result in a change of score has a parameter indicating how much score the player will earn upon calling the command. In \texttt{adventure.py}, where the main game loop is executed, calling a command (the use$\_$command() method) will check to see if the chosen command has a score change or not. If it does, then it will update the player's score attribute using the \texttt{player.change$\_$score()} method in \texttt{game$\_$entities.py}
 \end{enumerate}
 
 \section*{Enhancements}
