@@ -21,6 +21,8 @@ This file is Copyright (c) 2025 CSC111 Teaching Team
 from dataclasses import dataclass
 from typing import Optional, Any
 
+from pygame.sprite import collide_mask
+
 
 @dataclass
 class Command:
@@ -36,15 +38,14 @@ class Command:
         - item: the name of the item added to the Player's inventory, None if the Player is not given any item
         - cost: the name of the item that is removed from the Player's inventory, None if the Player's inventory remains
         - unlocked_commands: list of strings corresponding to the newly available commands, None if no commands are unlocked
-        - use_text: PROB NOT NEEDED <<<<<<
 
     Representation Invariants:
         - command_type in ["go", "pickup", "use", "buy", "talk", "exchange", "unlock"]
         - not command_type == "go" or next_location is not None
         - not command_type == "pickup" or item is not None
-        - not command_type == "use" <<< REMOVE ???  #TODO: whats this
         - not command_type == "buy" or (item is not None and cost is not None)
         - not command_type == "talk" or command_text is not None
+        - not command_type == "unlock" or command_text is not None
     """
     command_type: str
     available: bool
@@ -53,8 +54,8 @@ class Command:
     next_location: Optional[int] = None
     item: Optional[str] = None
     cost: Optional[str] = None
+    unlock_location: Optional[int] = None
     unlocked_commands: Optional[list[str]] = None
-    use_text: Optional[str] = None
 
     def __init__(self, command_type: str, result: Any, command_text: str = None, available: bool = True,
                  unlocked_commands: list[str] = None, score_change: int = 0):
@@ -64,15 +65,11 @@ class Command:
             self.next_location = result
         elif self.command_type == 'pickup':
             self.item = result
-        elif self.command_type == 'use':
-            self.use_text = result
         elif self.command_type == 'buy':
             self.cost = result[0]
             self.item = result[1]
-        elif self.command_type == 'talk':
-            print(command_text)     # display the command_text
         elif self.command_type == "unlock":
-            y = 1   # Nothing for now
+            self.unlock_location = result
 
         if not (unlocked_commands == [] or unlocked_commands is None):
             self.unlocked_commands = unlocked_commands
@@ -97,13 +94,14 @@ class Item:
         - description: description of the item
 
     Representation Invariants:
-        - # TODO Describe any necessary representation invariants
+        - not command_name is None or use_command is None
     """
     name: str
     description: str
+    command_name: Optional[str] = None
     use_command: Optional[Command] = None
 
-    def __init__(self, name, description, use_command=None) -> None:
+    def __init__(self, name, description, command_name=None, use_command=None) -> None:
         """Initialize a new item.
 
         # TODO Add more details here about the initialization if needed
@@ -111,8 +109,9 @@ class Item:
 
         self.name = name
         self.description = description
+        self.command_name = command_name
         if use_command is not None:
-            self.use_command = Command("use", *use_command)
+            self.use_command = Command(*use_command)
 
 
 @dataclass

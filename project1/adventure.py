@@ -95,7 +95,7 @@ class AdventureGame:
             if item_data['use_command'] == "":
                 item_obj = Item(item_data['name'], item_data['description'])
             else:
-                item_obj = Item(item_data['name'], item_data['description'], item_data['use_command'])
+                item_obj = Item(item_data['name'], item_data['description'], item_data["command_name"], item_data['use_command'])
             items[item_data['name']] = item_obj
 
         return locations, items
@@ -160,15 +160,18 @@ def use_command(command: Command, game: AdventureGame, player: Player) -> bool:
         command.print_command_text()
         item = game.get_item(command.item)
         player.give_item(item)
-    elif command.command_type == 'talk':
+    elif command.command_type == 'talk' or command.command_type == 'unlock':
         command.available = False
         command.print_command_text()
 
     print("------------------------------------------------")
 
     if command.unlocked_commands is not None:
-        for c in command.unlocked_commands:  # NEED DOCSTRING FOR THIS
-            location.commands[c].available = True
+        for c in command.unlocked_commands:  # TODO: NEED DOCSTRING FOR THIS
+            if command.command_type == 'unlock':
+                game.get_location(command.unlock_location).commands[c].available = True
+            else:
+                location.commands[c].available = True
     return True
 
 
@@ -243,14 +246,16 @@ if __name__ == "__main__":
         # Display possible actions at this location
         print("What to do? Choose from: look, inventory, score, undo, log, quit")
         print("At this location, you can also:")
-        available_commands = ([c for c in location.commands if location.commands[c].available] +
-                              ['use ' + item.name for item in player.get_inventory() if item.use_command is not None])
+        available_commands = [c for c in location.commands if location.commands[c].available]
+        item_commands = [item.command_name for item in player.get_inventory() if item.use_command is not None]
         for action in available_commands:
+            print("-", action)
+        for action in item_commands:
             print("-", action)
 
         # Validate choice
         choice = input("\nEnter action: ").lower().strip()
-        while choice not in available_commands and choice not in menu:
+        while choice not in available_commands and choice not in menu and choice not in item_commands:
             print("That was an invalid option; try again.")
             choice = input("\nEnter action: ").lower().strip()
 
@@ -263,9 +268,9 @@ if __name__ == "__main__":
         else:
             # Handle non-menu actions
             command = None
-            if choice[0:3] == 'use':
-                command = game.get_item(choice[4:]).use_command
-                print(command.use_text)
+            if choice in item_commands:
+                command = game.get_item(choice.split(" ")[1]).use_command
+                use_command(command, game, player)
                 if command.unlocked_commands is not None:
                     for c in command.unlocked_commands:
                         location.commands[c].available = True

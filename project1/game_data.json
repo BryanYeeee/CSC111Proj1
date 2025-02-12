@@ -47,12 +47,10 @@
       "long_description": "4 long",
       "commands": {
         "go west": ["go", 3],
-        "buy coffee": ["buy", ["cash", "coffee"], "You bought a large ice coffee for only 1 dollar!!!"],
-        "talk to upper year student": ["talk", "", "Hey, I heard you are doing some project. I got 100% on it so I think I could help. I didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
-        "exchange textbook for project tips": ["buy", ["textbook", "sticky note"], "Student: Here, ill write it on this sticky note for you", false]
+        "buy coffee": ["buy", ["cash", "coffee"], "You bought a large ice coffee for only 1 dollar!!!"]
       },
       "items": ["coffee", "sticky note"]
-    }
+    },
     {
       "id": 5,
       "name": "Classroom 2",
@@ -61,10 +59,12 @@
       "commands":
       {
         "go west": ["go", 9],
-        "talk to a student about the charger": ["talk","", "Hey! I saw a charger in classroom 1 but the key is with the Professor"], true, None]
+        "talk to a student about the charger": ["talk","", "Hey! I saw a charger in Classroom 1 but the key is with the Professor"],
+        "talk to upper year student": ["talk", "", "Hey, I heard you are doing some project. I got 100% on it so I think I could help. I didnt buy my textbooks this year, so ill help you if you can get me a textbook in exchange", true, ["exchange textbook for project tips"]],
+        "exchange textbook for project tips": ["buy", ["textbook", "sticky note"], "Student: Here, ill write it on this sticky note for you", false]
       },
       "items": []
-    }
+    },
     {
       "id": 6,
       "name": "Classroom 1",
@@ -73,7 +73,7 @@
       "commands":
       {
         "go east": ["go", 9],
-        "pickup Charger": ["pickup", "Charger", "Charger picked up", true, None, 2000]
+        "pickup charger": ["pickup", "charger", "Charger picked up", true, [], 2000]
       },
       "items": ["charger"]
     },
@@ -85,7 +85,7 @@
       "commands":
       {
         "go north": ["go", 9],
-        "Unlock Classroom 1": ["unlock","", "Prof: Hey Player! I have unlocked classroom 1", true, None, 1000]
+        "talk to professor": ["unlock",9, "Prof: Hey Player! I have unlocked classroom 1", true, ["go west"], 1000]
       },
       "items": []
     },
@@ -94,14 +94,14 @@
       "name": "CS Lounge",
       "brief_description": "8 brief",
       "long_description": "8 long",
-      "commands":
-      {
+      "commands": {
         "go east": ["go", 2],
-        "Talk to a friend": ["pickup", "USB", "Picked up USB", true],
-        "Talk to a student": ["exchange", "lucky mug"],
-        "Look through the Bookshelf": ["pickup", "comic book", "Picked up Comic Book", true, None, -1000]
+        "talk to half asleep student": ["talk", "", "Half Asleep Student: I'm so tired i need coffee", true, ["give half asleep student coffee"]],
+        "talk to group member": ["pickup", "USB", "Group member: Hi, heres your USB"],
+        "search bookshelves": ["pickup", "comic book"],
+        "give half asleep student coffee": ["buy", ["coffee", "lucky mug"], "Half Asleep Stuednt: thanks have this mug", false]
       },
-      "items": ["USB", "lucky mug"]
+      "items": ["comic book", "lucky mug", "USB"]
     },
     {
       "id": 9,
@@ -111,7 +111,7 @@
       "commands":
       {
         "go north": ["go", 2],
-        "go west": ["go", 6],
+        "go west": ["go", 6, "", false],
         "go east": ["go", 5],
         "go south": ["go", 7]
       },
@@ -122,7 +122,8 @@
     {
       "name": "notebook",
       "description": "Your notebook and todo list.",
-      "use_command": ["You need USB and Charger"]
+      "command_name": "read notebook",
+      "use_command": ["talk", "", "You need USB and Charger"]
     },
     {
       "name": "scrap paper",
