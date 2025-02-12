@@ -90,7 +90,7 @@
         "go east": ["go", 2],
         "talk to half asleep student": ["talk", "", "Half Asleep Student: I'm so tired i need coffee", true, ["give half asleep student coffee"]],
         "talk to group member": ["pickup", "USB", "Group member: Hi, here's the USB with our project files on it. \nGood luck!", true, [], 3000],
-        "search bookshelves": ["pickup", "comic book"],
+        "search bookshelves": ["pickup", "comicbook"],
         "give half asleep student coffee": ["buy", ["coffee", "lucky mug"], "Half Asleep Stuednt: Thank you so much, here, have this mug", false, [], 2000]
       }
     },
@@ -150,7 +150,7 @@
       "description": "A USB with project files on it, needed to submit your project"
     },
     {
-      "name": "comic book",
+      "name": "comicbook",
       "description": "The comic book is a fun book to kill time, but looks distracting.",
       "command_name": "read comic book",
       "use_command": ["talk", "", "You decide to get distracted and read your comic book.", true, [], -1000]
